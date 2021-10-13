@@ -9,8 +9,15 @@ import TodoOptions from "../todo-options";
 //style
 import style from "./style.module.css";
 
+//api
+import ApiService from "../../api";
+const api = new ApiService();
+
 export default class App extends React.Component {
   render() {
+    api.getAll().then((data) => {
+      console.log(data);
+    });
     return (
       <div className={style.todos}>
         <Title title="Todos" />

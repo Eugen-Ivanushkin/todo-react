@@ -1,32 +1,30 @@
+import callApi from "../utils/callApi";
+
 export default class ApiService {
-  _apiBase = "https://shop-fish2.herokuapp.com";
+  _apiBase = process.env.API_URL;
 
-  async getResource(url) {
-    const res = await fetch(`${this._apiBase}${url}`); //
-
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, received ${res.status}`);
-    }
-    return await res.json();
+  async getAll() {
+    const result = await callApi(`${_apiBase}/todos`, { method: "GET" });
+    return result;
   }
 
-  async getSettings() {
-    const settings = await this.getResource("/settings/");
-    return settings;
+  async addTask(data) {
+    const result = callApi(`${_apiBase}/todos`, { method: "POST", data });
+    return result;
   }
 
-  async getGoods(goodsGroup) {
-    const goods = await this.getResource(`/goods?${goodsGroup}`);
-    return goods;
+  async deleteTask(id) {
+    const result = callApi(`${_apiBase}/todos/${id}`, { method: "DELETE" });
+    return result;
   }
 
-  async getPresentations() {
-    const presentations = await this.getResource("/presentations/");
-    return presentations;
+  async deleteAllComplited() {
+    const result = callApi(`${_apiBase}/todos`, { method: "DELETE" });
+    return result;
   }
 
-  async getPhotos(goodId) {
-    const photos = await this.getResource(`/photos?_id=${goodId}`);
-    return photos;
+  async updateTask(data, id) {
+    const result = callApi(`${_apiBase}/todos/${id}`, { method: "PUT", data });
+    return result;
   }
 }
