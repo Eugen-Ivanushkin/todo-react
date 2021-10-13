@@ -1,0 +1,7 @@
+.todoOptions {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 10px;
+  border-top: 2px solid gray;
+}
