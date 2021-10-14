@@ -24,6 +24,11 @@ export default class App extends React.Component {
       const todos = state.todos.slice();
       if (action.type === "ADD") todos.push(action.payload);
 
+      if (action.type === "DELETE") {
+        const index = todos.findIndex((item) => item._id === action.payload);
+        todos.splice(index, 1);
+      }
+
       return { ...state, todos };
     });
   };
