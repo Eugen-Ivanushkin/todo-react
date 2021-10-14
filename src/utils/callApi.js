@@ -1,20 +1,21 @@
-const callApi = async (url, payload) => {
-  if (payload.data) {
+const callApi = async (url, { method, body }) => {
+  if (body) {
     const res = await fetch(url, {
-      method: payload.method,
+      method: method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload.data),
+      mode: "no-cors",
+      body: JSON.stringify(body),
     });
     const result = await res.json();
     return result;
   }
 
   const res = await fetch(url, {
-    method: payload.method,
+    method: method,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   const result = await res.json();

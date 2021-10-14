@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/Eugen-Ivanushkin/todo-react#readme",
   "dependencies": {
+    "core-js": "3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
