@@ -5,7 +5,6 @@ const callApi = async (url, { method, body }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      mode: "no-cors",
       body: JSON.stringify(body),
     });
     const result = await res.json();

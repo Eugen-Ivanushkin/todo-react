@@ -6,27 +6,13 @@ import TodoListItem from "../todo-list-item";
 //styles
 import style from "./style.module.css";
 
-const someTodoArr = [
-  {
-    id: 1,
-    taskName: "some task 1",
-  },
-  {
-    id: 2,
-    taskName: "some task 2",
-  },
-  {
-    id: 3,
-    taskName: "some task 3",
-  },
-];
-
 export default class TodoList extends React.Component {
   render() {
+    const { todos } = this.props;
     return (
       <ul className={style.todoList}>
-        {someTodoArr.map((el) => (
-          <TodoListItem key={el.id} id={el.id} taskName={el.taskName} />
+        {todos.map((el) => (
+          <TodoListItem key={el._id} id={el._id} text={el.text} />
         ))}
       </ul>
     );

@@ -2,6 +2,9 @@ import React from "react";
 
 import "regenerator-runtime/runtime";
 
+//context
+import TodosContext from "./todos-context";
+
 //components
 import Title from "../title";
 import AddForm from "../add-form";
@@ -11,24 +14,43 @@ import TodoOptions from "../todo-options";
 //style
 import style from "./style.module.css";
 
-api;
+//api;
 import ApiService from "../../api";
 const api = new ApiService();
 
 export default class App extends React.Component {
-  render() {
-    api.getAll().then((data) => {
-      console.log(data);
+  todosChange = (action) => {
+    this.setState((state) => {
+      const todos = state.todos.slice();
+      if (action.type === "ADD") todos.push(action.payload);
+
+      return { ...state, todos };
     });
+  };
+
+  state = {
+    todos: [],
+    todosChange: this.todosChange,
+  };
+
+  componentDidMount() {
+    api.getAll().then((data) => {
+      this.setState({ todos: data.data });
+      console.log(this.state.todos);
+    });
+  }
+  render() {
     return (
-      <div className={style.todos}>
-        <Title title="Todos" />
-        <div className={style.main}>
-          <AddForm />
-          <TodoList />
-          <TodoOptions option={["All", "Active", "Complited", "ClearAll"]} />
+      <TodosContext.Provider value={this.state}>
+        <div className={style.todos}>
+          <Title title="Todos" />
+          <div className={style.main}>
+            <AddForm />
+            <TodoList todos={this.state.todos} />
+            <TodoOptions option={["All", "Active", "Complited", "ClearAll"]} />
+          </div>
         </div>
-      </div>
+      </TodosContext.Provider>
     );
   }
 }
