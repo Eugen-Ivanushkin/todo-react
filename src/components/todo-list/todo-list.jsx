@@ -11,35 +11,6 @@ import ApiService from "../../api";
 const api = new ApiService();
 
 export default class TodoList extends React.Component {
-  state = {
-    waitingForClick: false,
-    inputChangeId: "",
-  };
-
-  theClick = (e, id, newText) => {
-    switch (e.detail) {
-      case 1: // first click
-        this.state.waitingForClick = setTimeout(() => {
-          this.handleIsDoneClick(id);
-        }, 250);
-        break;
-
-      default:
-        // more click
-        if (this.state.waitingForClick) {
-          // remove click
-          clearTimeout(this.state.waitingForClick);
-          this.state.waitingForClick = false;
-          this.setState({
-            ...this.state,
-            waitingForClick: false,
-            inputChangeId: id,
-          });
-        }
-        break;
-    }
-  };
-
   handleIsDoneClick = (id) => {
     const { todosChange, todos } = this.props;
 
@@ -64,8 +35,6 @@ export default class TodoList extends React.Component {
     api.updateTask(task, id).then((data) => {
       todosChange({ type: "UPDATE", payload: { id, newText } });
     });
-
-    this.setState({ ...this.state, inputChangeId: "" });
   };
 
   handleDeleteClick = (id) => {
@@ -88,7 +57,6 @@ export default class TodoList extends React.Component {
             key={el._id}
             id={el._id}
             text={el.text}
-            inputChangeId={this.state.inputChangeId}
             isDone={el.isDone}
             theClick={this.theClick}
             handleIsDoneClick={this.handleIsDoneClick}
