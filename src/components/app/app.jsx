@@ -48,11 +48,12 @@ export default class App extends React.Component {
   };
 
   sortTodosChange = (action) => {
-    console.log(this);
-    let sortTodos = this.state.todos.slice();
+    const { state } = this;
+    const { todos } = this.state;
+    let sortTodos = todos.slice();
 
     if (action === "ALL") {
-      this.setState({ ...state, sortTodos });
+      this.setState({ state, sortTodos });
     }
 
     if (action === "ACTIVE") {
@@ -63,6 +64,11 @@ export default class App extends React.Component {
     if (action === "COMPLITED") {
       sortTodos = todos.filter((item) => item.isDone === true);
       this.setState({ ...state, sortTodos });
+    }
+
+    if (action === "CLEARALL") {
+      sortTodos = todos.filter((item) => item.isDone === false);
+      this.setState({ ...state, todos: sortTodos, sortTodos });
     }
   };
 
