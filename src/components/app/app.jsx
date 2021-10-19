@@ -29,30 +29,71 @@ export default class App extends React.Component {
         todos.splice(index, 1);
       }
 
-      return { ...state, todos };
+      if (action.type === "ISDONE") {
+        const index = todos.findIndex((item) => item._id === action.payload);
+        const task = todos.splice(index, 1)[0];
+        task.isDone = !task.isDone;
+        todos.splice(index, 0, task);
+      }
+
+      if (action.type === "UPDATE") {
+        const index = todos.findIndex((item) => item._id === action.payload.id);
+        const task = todos.splice(index, 1)[0];
+        task.text = action.payload.newText;
+        todos.splice(index, 0, task);
+      }
+
+      return { ...state, todos, sortTodos: todos.slice() };
     });
+  };
+
+  sortTodosChange = (action) => {
+    console.log(this);
+    let sortTodos = this.state.todos.slice();
+
+    if (action === "ALL") {
+      this.setState({ ...state, sortTodos });
+    }
+
+    if (action === "ACTIVE") {
+      sortTodos = todos.filter((item) => item.isDone === false);
+      this.setState({ ...state, sortTodos });
+    }
+
+    if (action === "COMPLITED") {
+      sortTodos = todos.filter((item) => item.isDone === true);
+      this.setState({ ...state, sortTodos });
+    }
   };
 
   state = {
     todos: [],
+    sortTodos: [],
     todosChange: this.todosChange,
   };
 
   componentDidMount() {
     api.getAll().then((data) => {
-      this.setState({ todos: data.data });
-      console.log(this.state.todos);
+      this.setState({ todos: data.data, sortTodos: data.data });
     });
   }
   render() {
+    const { todos, sortTodos } = this.state;
     return (
       <TodosContext.Provider value={this.state}>
         <div className={style.todos}>
           <Title title="Todos" />
           <div className={style.main}>
             <AddForm />
-            <TodoList todos={this.state.todos} />
-            <TodoOptions option={["All", "Active", "Complited", "ClearAll"]} />
+            <TodoList
+              todos={todos}
+              sortTodos={sortTodos}
+              todosChange={this.todosChange}
+            />
+            <TodoOptions
+              sortTodosChange={this.sortTodosChange}
+              option={["All", "Active", "Complited", "ClearAll"]}
+            />
           </div>
         </div>
       </TodosContext.Provider>

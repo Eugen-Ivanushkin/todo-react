@@ -20,7 +20,7 @@ export default class AddForm extends React.Component {
   render() {
     return (
       <TodosContext.Consumer>
-        {({ todos, todosChange }) => (
+        {({ todosChange }) => (
           <input
             onChange={(e) => {
               this.onChange(e);
@@ -29,6 +29,7 @@ export default class AddForm extends React.Component {
               if (e.key === "Enter") {
                 api.addTask({ taskName: this.state.text }).then((data) => {
                   todosChange({ type: "ADD", payload: data.data });
+                  e.target.value = "";
                 });
               }
             }}

@@ -1,39 +1,66 @@
 import React from "react";
-import TodosContext from "../app/todos-context";
 
 //style
 import style from "./style.module.css";
 
-//api
-import ApiService from "../../api";
-const api = new ApiService();
-
 export default class TodoListItem extends React.Component {
+  state = {
+    text: this.props.text,
+  };
+
+  theClick = (e) => {
+    const { theClick, id } = this.props;
+    if (e.target.id) {
+      theClick(e, id);
+    }
+  };
+
+  handleDeleteClick = () => {
+    const { handleDeleteClick, id } = this.props;
+    handleDeleteClick(id);
+  };
+
+  handleUpdateTextClick = () => {
+    const { handleUpdateTextClick, id } = this.props;
+    const { text } = this.state;
+    handleUpdateTextClick(id, text);
+  };
+
+  onChange = (e) => {
+    const { value } = e.target;
+    this.setState({ text: value });
+  };
+
   render() {
-    const { id, text } = this.props;
+    const { id, text, isDone, inputChangeId } = this.props;
     return (
-      <TodosContext.Consumer>
-        {({ todos, todosChange }) => (
-          <li className={style.listItem} key={id} id={id}>
-            <p className={style.listItemText}>{text}</p>
+      <li className={style.listItem} key={id} id={id} onClick={this.theClick}>
+        {inputChangeId !== id ? (
+          <>
+            <p
+              className={`${style.listItemText} ${isDone ? style.isDone : ""}`}
+            >
+              {text}
+            </p>
             <button
-              onClick={(e) => {
-                const { id } = e.target.parentElement;
-                try {
-                  api.deleteTask(id).then((data) => {
-                    todosChange({ type: "DELETE", payload: id });
-                  });
-                } catch (e) {
-                  console.log(e.message);
-                }
-              }}
+              onClick={this.handleDeleteClick}
               className={style.listItemBtn}
             >
               x
             </button>
-          </li>
+          </>
+        ) : (
+          <input
+            onChange={(e) => {
+              this.onChange(e);
+            }}
+            value={this.state.text}
+            onBlur={this.handleUpdateTextClick}
+            className={style.updateInput}
+            autoFocus
+          />
         )}
-      </TodosContext.Consumer>
+      </li>
     );
   }
 }
