@@ -1,5 +1,4 @@
 import React from "react";
-import TodosContext from "../app/todos-context";
 
 //style
 import style from "./style.module.css";
@@ -18,26 +17,23 @@ export default class AddForm extends React.Component {
     this.setState({ text: value });
   };
   render() {
+    const { todosChange } = this.props;
     return (
-      <TodosContext.Consumer>
-        {({ todosChange }) => (
-          <input
-            onChange={(e) => {
-              this.onChange(e);
-            }}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                api.addTask({ taskName: this.state.text }).then((data) => {
-                  todosChange({ type: "ADD", payload: data.data });
-                  e.target.value = "";
-                });
-              }
-            }}
-            className={style.add_input}
-            placeholder="What is you done?"
-          />
-        )}
-      </TodosContext.Consumer>
+      <input
+        onChange={(e) => {
+          this.onChange(e);
+        }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            api.addTask({ taskName: this.state.text }).then((data) => {
+              todosChange({ type: "ADD", payload: data.data });
+              e.target.value = "";
+            });
+          }
+        }}
+        className={style.add_input}
+        placeholder="What is you done?"
+      />
     );
   }
 }

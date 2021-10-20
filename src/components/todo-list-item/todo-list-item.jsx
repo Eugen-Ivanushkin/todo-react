@@ -20,7 +20,6 @@ export default class TodoListItem extends React.Component {
     switch (e.detail) {
       case 1: // first click
         this.state.waitingForClick = setTimeout(() => {
-          console.log("One click");
           handleIsDoneClick(id);
         }, 250);
         break;

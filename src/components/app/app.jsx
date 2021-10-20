@@ -2,9 +2,6 @@ import React from "react";
 
 import "regenerator-runtime/runtime";
 
-//context
-import TodosContext from "./todos-context";
-
 //components
 import Title from "../title";
 import AddForm from "../add-form";
@@ -86,23 +83,21 @@ export default class App extends React.Component {
   render() {
     const { todos, sortTodos } = this.state;
     return (
-      <TodosContext.Provider value={this.state}>
-        <div className={style.todos}>
-          <Title title="Todos" />
-          <div className={style.main}>
-            <AddForm />
-            <TodoList
-              todos={todos}
-              sortTodos={sortTodos}
-              todosChange={this.todosChange}
-            />
-            <TodoOptions
-              sortTodosChange={this.sortTodosChange}
-              option={["All", "Active", "Complited", "ClearAll"]}
-            />
-          </div>
+      <div className={style.todos}>
+        <Title title="Todos" />
+        <div className={style.main}>
+          <AddForm todosChange={this.todosChange} />
+          <TodoList
+            todos={todos}
+            sortTodos={sortTodos}
+            todosChange={this.todosChange}
+          />
+          <TodoOptions
+            sortTodosChange={this.sortTodosChange}
+            option={["All", "Active", "Complited", "ClearAll"]}
+          />
         </div>
-      </TodosContext.Provider>
+      </div>
     );
   }
 }
