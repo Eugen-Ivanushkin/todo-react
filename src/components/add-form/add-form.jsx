@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
 
 //style
-import style from "./style.module.css";
+import style from './style.module.css';
 
 //api;
-import ApiService from "../../api";
+import ApiService from '../../api';
+import { connect } from 'react-redux';
 const api = new ApiService();
 
-export default class AddForm extends React.Component {
+class AddForm extends React.Component {
   state = {
-    text: "",
+    text: '',
   };
 
   onChange = (e) => {
@@ -17,17 +18,17 @@ export default class AddForm extends React.Component {
     this.setState({ text: value });
   };
   render() {
-    const { todosChange } = this.props;
+    const { addTask } = this.props;
     return (
       <input
         onChange={(e) => {
           this.onChange(e);
         }}
         onKeyPress={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === 'Enter') {
             api.addTask({ taskName: this.state.text }).then((data) => {
-              todosChange({ type: "ADD", payload: data.data });
-              e.target.value = "";
+              addTask(data.data);
+              e.target.value = '';
             });
           }
         }}
@@ -37,3 +38,17 @@ export default class AddForm extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ todos }) => {
+  return { todos };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTask: (newTask) => {
+      dispatch({ type: 'ADD_TODOS_TASK', payload: newTask });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddForm);

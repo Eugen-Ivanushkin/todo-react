@@ -1,18 +1,20 @@
-import React from "react";
+import React from 'react';
 
 //components
-import TodoListItem from "../todo-list-item";
+import TodoListItem from '../todo-list-item';
 
 //styles
-import style from "./style.module.css";
+import style from './style.module.css';
+
+import { connect } from 'react-redux';
 
 //api;
-import ApiService from "../../api";
+import ApiService from '../../api';
 const api = new ApiService();
 
-export default class TodoList extends React.Component {
+class TodoList extends React.Component {
   handleIsDoneClick = (id) => {
-    const { todosChange, todos } = this.props;
+    const { isDoneTask, todos } = this.props;
 
     const copyTodos = todos.slice();
     const index = copyTodos.findIndex((item) => item._id === id);
@@ -20,12 +22,12 @@ export default class TodoList extends React.Component {
     task.isDone = !task.isDone;
 
     api.updateTask(task, id).then((data) => {
-      todosChange({ type: "ISDONE", payload: id });
+      isDoneTask(id);
     });
   };
 
   handleUpdateTextClick = (id, newText) => {
-    const { todosChange, todos } = this.props;
+    const { updateTask, todos } = this.props;
 
     const copyTodos = todos.slice();
     const index = copyTodos.findIndex((item) => item._id === id);
@@ -33,26 +35,34 @@ export default class TodoList extends React.Component {
     task.text = newText;
 
     api.updateTask(task, id).then((data) => {
-      todosChange({ type: "UPDATE", payload: { id, newText } });
+      console.log(data);
+      updateTask(id, newText);
     });
   };
 
   handleDeleteClick = (id) => {
-    const { todosChange } = this.props;
+    const { deleteTask } = this.props;
     try {
       api.deleteTask(id).then((data) => {
-        todosChange({ type: "DELETE", payload: id });
+        deleteTask(id);
       });
     } catch (e) {
       console.log(e.message);
     }
   };
 
+  componentDidMount() {
+    api.getAll().then(({ data }) => {
+      this.props.todosLoaded(data);
+    });
+  }
+
   render() {
-    const { sortTodos } = this.props;
+    const { todos } = this.props;
+    console.log(todos);
     return (
       <ul className={style.todoList}>
-        {sortTodos.map((el) => (
+        {todos.map((el) => (
           <TodoListItem
             key={el._id}
             id={el._id}
@@ -68,3 +78,29 @@ export default class TodoList extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ todos }) => {
+  return { todos };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    todosLoaded: (newTodos) => {
+      dispatch({ type: 'TODOS_LOADED', payload: newTodos });
+    },
+
+    deleteTask: (id) => {
+      dispatch({ type: 'DELETE_TODOS_TASK', payload: id });
+    },
+
+    isDoneTask: (id) => {
+      dispatch({ type: 'ISDONE_TODOS_TASK', payload: id });
+    },
+
+    updateTask: (id, newText) => {
+      dispatch({ type: 'UPDATE_TODOS_TASK', payload: { id, newText } });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
