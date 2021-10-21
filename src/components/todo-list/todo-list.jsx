@@ -13,6 +13,15 @@ import ApiService from '../../api';
 const api = new ApiService();
 
 class TodoList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.filterPredicate = {
+      ['ALL']: (todos) => true,
+      ['ACTIVE']: (todos) => !todos.isDone,
+      ['COMPLETED']: (todos) => todos.isDone,
+    };
+  }
   handleIsDoneClick = (id) => {
     const { isDoneTask, todos } = this.props;
 
@@ -58,11 +67,13 @@ class TodoList extends React.Component {
   }
 
   render() {
-    const { todos } = this.props;
-    console.log(todos);
+    const todos = this.props.todos;
+    const filteredTodos = todos?.filter(
+      this.filterPredicate[this.props.filter]
+    );
     return (
       <ul className={style.todoList}>
-        {todos.map((el) => (
+        {filteredTodos?.map((el) => (
           <TodoListItem
             key={el._id}
             id={el._id}
@@ -79,8 +90,8 @@ class TodoList extends React.Component {
   }
 }
 
-const mapStateToProps = ({ todos }) => {
-  return { todos };
+const mapStateToProps = (state) => {
+  return { todos: state.todos };
 };
 
 const mapDispatchToProps = (dispatch) => {

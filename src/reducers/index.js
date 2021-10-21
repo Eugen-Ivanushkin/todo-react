@@ -45,6 +45,12 @@ const reducer = (state = initialState, action) => {
       return { ...state, todos };
     }
 
+    case 'CLEAR_ISDONE_TODOS_TASKS': {
+      const todos = state.todos.slice().filter((item) => item.isDone === false);
+
+      return { ...state, todos };
+    }
+
     default:
       return state;
   }

@@ -16,25 +16,20 @@ import ApiService from '../../api';
 const api = new ApiService();
 
 export default class App extends React.Component {
-  sortTodosChange = (action) => {
-    // const { state } = this;
-    // const { todos } = this.state;
-    // let sortTodos = todos.slice();
-    // if (action === "ALL") {
-    //   this.setState({ state, sortTodos });
-    // }
-    // if (action === "ACTIVE") {
-    //   sortTodos = todos.filter((item) => item.isDone === false);
-    //   this.setState({ ...state, sortTodos });
-    // }
-    // if (action === "COMPLITED") {
-    //   sortTodos = todos.filter((item) => item.isDone === true);
-    //   this.setState({ ...state, sortTodos });
-    // }
-    // if (action === "CLEARALL") {
-    //   sortTodos = todos.filter((item) => item.isDone === false);
-    //   this.setState({ ...state, todos: sortTodos, sortTodos });
-    // }
+  state = {
+    filter: 'ALL',
+  };
+
+  handleTodosChange = (action) => {
+    if (action === 'ALL') {
+      this.setState({ filter: 'ALL' });
+    }
+    if (action === 'ACTIVE') {
+      this.setState({ filter: 'ACTIVE' });
+    }
+    if (action === 'COMPLETED') {
+      this.setState({ filter: 'COMPLETED' });
+    }
   };
 
   render() {
@@ -43,10 +38,10 @@ export default class App extends React.Component {
         <Title title="Todos" />
         <div className={style.main}>
           <AddForm />
-          <TodoList />
+          <TodoList filter={this.state.filter} />
           <TodoOptions
-            sortTodosChange={this.sortTodosChange}
-            option={['All', 'Active', 'Complited', 'ClearAll']}
+            onTodosChange={this.handleTodosChange}
+            filters={['All', 'Active', 'Completed']}
           />
         </div>
       </div>

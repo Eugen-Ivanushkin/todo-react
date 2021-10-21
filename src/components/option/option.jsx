@@ -1,17 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import style from "./style.module.css";
+import style from './style.module.css';
 
-export default class Option extends React.Component {
-  handleOption = (e) => {
-    const { handleOption } = this.props;
-    handleOption(e);
+export default class Filter extends React.Component {
+  handleClick = () => {
+    this.props.onFilterChange(this.props.name.toUpperCase());
   };
 
   render() {
     const { name } = this.props;
     return (
-      <button onClick={this.handleOption} className={style.groupBtn}>
+      <button onClick={this.handleClick} className={style.groupBtn}>
         {name}
       </button>
     );
