@@ -1,6 +1,6 @@
 const initialState = {
   todos: [],
-  filter: 'ALL',
+  filter: 'ACTIVE',
 };
 
 const reducer = (state = initialState, action) => {

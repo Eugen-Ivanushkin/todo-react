@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import getObjectById from '../../utils/getObjectById';
 
@@ -44,22 +44,22 @@ const TodoList = () => {
   };
 
   const handleDeleteClick = (id) => {
-    try {
-      api.deleteTask(id).then(() => {
-        dispatch({ type: 'DELETE_TODOS_TASK', payload: id });
-      });
-    } catch (e) {
-      console.log(e.message);
-    }
+    api.deleteTask(id).then(() => {
+      dispatch({ type: 'DELETE_TODOS_TASK', payload: id });
+    });
   };
 
   useEffect(() => {
     api.getAll().then(({ data }) => {
       dispatch({ type: 'TODOS_LOADED', payload: data });
+      dispatch({ type: 'ALL' });
     });
   }, []);
 
-  const filteredTodos = todos?.filter(filterPredicate[filter]);
+  const filteredTodos = useMemo(
+    () => todos?.filter(filterPredicate[filter]),
+    [filter, todos]
+  );
   return (
     <ul className={style.todoList}>
       {filteredTodos?.map((el) => (

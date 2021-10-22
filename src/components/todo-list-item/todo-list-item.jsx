@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 //style
 import style from './style.module.css';
@@ -42,19 +42,19 @@ const TodoListItem = (props) => {
     }
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = useCallback(() => {
     onDeleteClick(id);
-  };
+  }, [id]);
 
-  const handleUpdateTextClick = () => {
+  const handleUpdateTextClick = useCallback(() => {
     onUpdateTextClick(id, newText);
     setIsEdit(false);
-  };
+  }, [id, newText]);
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { value } = e.target;
     setNewText(value);
-  };
+  }, []);
 
   return (
     <li className={style.listItem} key={id} onClick={handleClick}>
