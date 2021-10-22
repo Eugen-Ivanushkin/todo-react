@@ -1,54 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+//api;
+import ApiService from '../../api';
 
 //style
 import style from './style.module.css';
 
-//api;
-import ApiService from '../../api';
-import { connect } from 'react-redux';
-const api = new ApiService();
+const AddForm = () => {
+  const [text, setText] = useState('');
 
-class AddForm extends React.Component {
-  state = {
-    text: '',
+  const dispatch = useDispatch();
+
+  const api = new ApiService();
+
+  const handleChangeText = (e) => {
+    setText(e.target.value);
   };
 
-  onChange = (e) => {
-    const { value } = e.target;
-    this.setState({ text: value });
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      api.addTask({ taskName: text }).then(({ data }) => {
+        dispatch({ type: 'ADD_TODOS_TASK', payload: data });
+        e.target.value = '';
+      });
+    }
   };
-  render() {
-    const { addTask } = this.props;
-    return (
-      <input
-        onChange={(e) => {
-          this.onChange(e);
-        }}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            api.addTask({ taskName: this.state.text }).then((data) => {
-              addTask(data.data);
-              e.target.value = '';
-            });
-          }
-        }}
-        className={style.add_input}
-        placeholder="What is you done?"
-      />
-    );
-  }
-}
 
-const mapStateToProps = ({ todos }) => {
-  return { todos };
+  return (
+    <input
+      onChange={handleChangeText}
+      onKeyPress={handleKeyPress}
+      className={style.add_input}
+      placeholder="What is you done?"
+    />
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTask: (newTask) => {
-      dispatch({ type: 'ADD_TODOS_TASK', payload: newTask });
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddForm);
+export default AddForm;

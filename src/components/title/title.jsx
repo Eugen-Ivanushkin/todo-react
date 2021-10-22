@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 //styles
-import style from "./style.module.css";
+import style from './style.module.css';
 
-export default class Title extends React.Component {
-  render() {
-    return <h1 className={style.h1}>{this.props.title}</h1>;
-  }
-}
+const Title = ({ title }) => {
+  return <h1 className={style.h1}>{title}</h1>;
+};
+
+export default Title;

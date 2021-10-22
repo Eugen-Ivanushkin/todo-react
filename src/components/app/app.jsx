@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import 'regenerator-runtime/runtime';
 
@@ -13,38 +13,40 @@ import style from './style.module.css';
 
 //api;
 import ApiService from '../../api';
-const api = new ApiService();
 
-export default class App extends React.Component {
-  state = {
-    filter: 'ALL',
+const App = () => {
+  const [filter, setFilter] = useState('ALL');
+
+  const api = new ApiService();
+
+  const handleTodosChange = (action) => {
+    switch (action) {
+      case 'ACTIVE': {
+        setFilter('ACTIVE');
+        break;
+      }
+      case 'COMPLETED': {
+        setFilter('COMPLETED');
+        break;
+      }
+      default:
+        setFilter('ALL');
+    }
   };
 
-  handleTodosChange = (action) => {
-    if (action === 'ALL') {
-      this.setState({ filter: 'ALL' });
-    }
-    if (action === 'ACTIVE') {
-      this.setState({ filter: 'ACTIVE' });
-    }
-    if (action === 'COMPLETED') {
-      this.setState({ filter: 'COMPLETED' });
-    }
-  };
-
-  render() {
-    return (
-      <div className={style.todos}>
-        <Title title="Todos" />
-        <div className={style.main}>
-          <AddForm />
-          <TodoList filter={this.state.filter} />
-          <TodoOptions
-            onTodosChange={this.handleTodosChange}
-            filters={['All', 'Active', 'Completed']}
-          />
-        </div>
+  return (
+    <div className={style.todos}>
+      <Title title="Todos" />
+      <div className={style.main}>
+        <AddForm />
+        <TodoList filter={filter} />
+        <TodoOptions
+          onTodosChange={handleTodosChange}
+          filters={['All', 'Active', 'Completed']}
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default App;

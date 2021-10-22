@@ -2,17 +2,16 @@ import React from 'react';
 
 import style from './style.module.css';
 
-export default class Filter extends React.Component {
-  handleClick = () => {
-    this.props.onFilterChange(this.props.name.toUpperCase());
+const Filter = ({ name, onFilterChange }) => {
+  const handleClick = () => {
+    onFilterChange(name.toUpperCase());
   };
 
-  render() {
-    const { name } = this.props;
-    return (
-      <button onClick={this.handleClick} className={style.groupBtn}>
-        {name}
-      </button>
-    );
-  }
-}
+  return (
+    <button onClick={handleClick} className={style.groupBtn}>
+      {name}
+    </button>
+  );
+};
+
+export default Filter;
