@@ -11,17 +11,17 @@ import ApiService from '../../api';
 import { useDispatch } from 'react-redux';
 const api = new ApiService();
 
-const TodoOptions = ({ filters, onTodosChange }) => {
+const TodoOptions = ({ filters }) => {
   const dispatch = useDispatch();
 
   const handleFilterChange = (actionName) => {
-    onTodosChange(actionName);
+    dispatch({ type: actionName });
   };
 
   const handleClearClicked = () => {
     api.deleteAllComplited().then(() => {
       dispatch({ type: 'CLEAR_ISDONE_TODOS_TASKS' });
-      onTodosChange('ALL');
+      handleFilterChange('ALL');
     });
   };
 

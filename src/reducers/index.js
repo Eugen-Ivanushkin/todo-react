@@ -1,13 +1,12 @@
 const initialState = {
   todos: [],
+  filter: 'ALL',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'TODOS_LOADED':
-      return {
-        todos: action.payload,
-      };
+      return { ...state, todos: action.payload };
 
     case 'ADD_TODOS_TASK': {
       const todos = state.todos.slice();
@@ -49,6 +48,18 @@ const reducer = (state = initialState, action) => {
       const todos = state.todos.slice().filter((item) => item.isDone === false);
 
       return { ...state, todos };
+    }
+
+    case 'ALL': {
+      return { ...state, filter: action.type };
+    }
+
+    case 'ACTIVE': {
+      return { ...state, filter: action.type };
+    }
+
+    case 'COMPLETED': {
+      return { ...state, filter: action.type };
     }
 
     default:

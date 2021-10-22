@@ -13,12 +13,14 @@ import ApiService from '../../api';
 
 const api = new ApiService();
 
-const TodoList = ({ filter }) => {
+const TodoList = () => {
   const todos = useSelector((state) => state.todos);
+  const filter = useSelector((state) => state.filter);
+
   const dispatch = useDispatch();
 
   const filterPredicate = {
-    ['ALL']: (todos) => true,
+    ['ALL']: () => true,
     ['ACTIVE']: (todos) => !todos.isDone,
     ['COMPLETED']: (todos) => todos.isDone,
   };
