@@ -18,7 +18,7 @@ const TodoListItem = (props) => {
 
   let waitingForClick = false;
 
-  const handleClick = (e) => {
+  const handleClick = useCallback((e) => {
     if (e.target.id === 'delBtn') {
       return;
     }
@@ -40,7 +40,7 @@ const TodoListItem = (props) => {
         }
         break;
     }
-  };
+  }, []);
 
   const handleDeleteClick = useCallback(() => {
     onDeleteClick(id);

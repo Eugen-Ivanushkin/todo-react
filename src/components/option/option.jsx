@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import style from './style.module.css';
 
 const Filter = ({ name, onFilterChange }) => {
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     onFilterChange(name.toUpperCase());
-  };
+  }, [name]);
 
   return (
     <button onClick={handleClick} className={style.groupBtn}>

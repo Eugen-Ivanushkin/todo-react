@@ -1,5 +1,5 @@
 const getObjectById = (arr, id) => {
-  const obj = arr.filter((item) => item._id === id)[0];
+  const obj = arr.find((item) => item._id === id);
   return { ...obj };
 };
 

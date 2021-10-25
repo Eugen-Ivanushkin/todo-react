@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import getObjectById from '../../utils/getObjectById';
 
@@ -11,6 +11,9 @@ import style from './style.module.css';
 //api;
 import ApiService from '../../api';
 
+//const
+import filterPredicate from '../../const/predicates';
+
 const api = new ApiService();
 
 const TodoList = () => {
@@ -19,35 +22,35 @@ const TodoList = () => {
 
   const dispatch = useDispatch();
 
-  const filterPredicate = {
-    ['ALL']: () => true,
-    ['ACTIVE']: (todos) => !todos.isDone,
-    ['COMPLETED']: (todos) => todos.isDone,
-  };
+  const handleIsDoneClick = useCallback(
+    (id) => {
+      const task = getObjectById(todos, id);
+      task.isDone = !task.isDone;
 
-  const handleIsDoneClick = (id) => {
-    const task = getObjectById(todos, id);
-    task.isDone = !task.isDone;
+      api.updateTask(task, id).then(() => {
+        dispatch({ type: 'ISDONE_TODOS_TASK', payload: id });
+      });
+    },
+    [todos]
+  );
 
-    api.updateTask(task, id).then(() => {
-      dispatch({ type: 'ISDONE_TODOS_TASK', payload: id });
-    });
-  };
+  const handleUpdateTextClick = useCallback(
+    (id, newText) => {
+      const task = getObjectById(todos, id);
+      task.text = newText;
 
-  const handleUpdateTextClick = (id, newText) => {
-    const task = getObjectById(todos, id);
-    task.text = newText;
+      api.updateTask(task, id).then(() => {
+        dispatch({ type: 'UPDATE_TODOS_TASK', payload: { id, newText } });
+      });
+    },
+    [todos]
+  );
 
-    api.updateTask(task, id).then(() => {
-      dispatch({ type: 'UPDATE_TODOS_TASK', payload: { id, newText } });
-    });
-  };
-
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = useCallback((id) => {
     api.deleteTask(id).then(() => {
       dispatch({ type: 'DELETE_TODOS_TASK', payload: id });
     });
-  };
+  }, []);
 
   useEffect(() => {
     api.getAll().then(({ data }) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 //components
 import Filter from '../option';
@@ -14,16 +14,16 @@ const api = new ApiService();
 const TodoOptions = ({ filters }) => {
   const dispatch = useDispatch();
 
-  const handleFilterChange = (actionName) => {
+  const handleFilterChange = useCallback((actionName) => {
     dispatch({ type: actionName });
-  };
+  }, []);
 
-  const handleClearClicked = () => {
+  const handleClearClicked = useCallback(() => {
     api.deleteAllComplited().then(() => {
       dispatch({ type: 'CLEAR_ISDONE_TODOS_TASKS' });
       handleFilterChange('ALL');
     });
-  };
+  }, []);
 
   return (
     <div className={style.todoOptions}>

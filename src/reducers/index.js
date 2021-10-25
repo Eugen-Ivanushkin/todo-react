@@ -24,11 +24,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'ISDONE_TODOS_TASK': {
-      const todos = state.todos.slice();
-      const index = todos.findIndex((item) => item._id === action.payload);
-      const task = todos.splice(index, 1)[0];
-      task.isDone = !task.isDone;
-      todos.splice(index, 0, task);
+      const todos = state.todos.map((todo) =>
+        todo._id === action.payload ? { ...todo, isDone: !todo.isDone } : todo
+      );
 
       return { ...state, todos };
     }

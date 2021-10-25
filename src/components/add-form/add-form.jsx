@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 //api;
@@ -14,18 +14,24 @@ const AddForm = () => {
 
   const api = new ApiService();
 
-  const handleChangeText = (e) => {
-    setText(e.target.value);
-  };
+  const handleChangeText = useCallback(
+    (e) => {
+      setText(e.target.value);
+    },
+    [text]
+  );
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      api.addTask({ taskName: text }).then(({ data }) => {
-        dispatch({ type: 'ADD_TODOS_TASK', payload: data });
-        e.target.value = '';
-      });
-    }
-  };
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key === 'Enter') {
+        api.addTask({ taskName: text }).then(({ data }) => {
+          dispatch({ type: 'ADD_TODOS_TASK', payload: data });
+          e.target.value = '';
+        });
+      }
+    },
+    [text]
+  );
 
   return (
     <input
