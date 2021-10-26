@@ -53,12 +53,9 @@ const TodoList = () => {
   }, []);
 
   useEffect(() => {
-    api.getAll().then(({ data }) => {
-      dispatch({ type: 'TODOS_LOADED', payload: data });
-      dispatch({ type: 'ALL' });
-    });
+    dispatch({ type: 'ASYNC_TODOS_LOADED' });
+    dispatch({ type: 'ALL' });
   }, []);
-
   const filteredTodos = useMemo(
     () => todos?.filter(filterPredicate[filter]),
     [filter, todos]
