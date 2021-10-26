@@ -19,10 +19,8 @@ const TodoOptions = ({ filters }) => {
   }, []);
 
   const handleClearClicked = useCallback(() => {
-    api.deleteAllComplited().then(() => {
-      dispatch({ type: 'CLEAR_ISDONE_TODOS_TASKS' });
-      handleFilterChange('ALL');
-    });
+    dispatch({ type: 'ASYNC_CLEAR_ISDONE_TODOS_TASKS' });
+    handleFilterChange('ALL');
   }, []);
 
   return (

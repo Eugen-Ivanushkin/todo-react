@@ -27,9 +27,7 @@ const TodoList = () => {
       const task = getObjectById(todos, id);
       task.isDone = !task.isDone;
 
-      api.updateTask(task, id).then(() => {
-        dispatch({ type: 'ISDONE_TODOS_TASK', payload: id });
-      });
+      dispatch({ type: 'ASYNC_ISDONE_TODOS_TASK', payload: { task, id } });
     },
     [todos]
   );
@@ -39,17 +37,16 @@ const TodoList = () => {
       const task = getObjectById(todos, id);
       task.text = newText;
 
-      api.updateTask(task, id).then(() => {
-        dispatch({ type: 'UPDATE_TODOS_TASK', payload: { id, newText } });
+      dispatch({
+        type: 'ASYNC_UPDATE_TODOS_TASK',
+        payload: { task, id, newText },
       });
     },
     [todos]
   );
 
   const handleDeleteClick = useCallback((id) => {
-    api.deleteTask(id).then(() => {
-      dispatch({ type: 'DELETE_TODOS_TASK', payload: id });
-    });
+    dispatch({ type: 'ASYNC_DELETE_TODOS_TASK', payload: id });
   }, []);
 
   useEffect(() => {

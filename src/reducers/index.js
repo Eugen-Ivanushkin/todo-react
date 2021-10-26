@@ -9,6 +9,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, todos: action.payload };
 
     case 'ADD_TODOS_TASK': {
+      console.log(action.payload);
       const todos = state.todos.slice();
       todos.push(action.payload);
 
