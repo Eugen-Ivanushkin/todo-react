@@ -1,24 +1,24 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import getObjectById from '../../utils/getObjectById';
+import { Option } from '../../const/predicates';
 
 //components
 import TodoListItem from '../todo-list-item';
 
 //styles
+//@ts-ignore
 import style from './style.module.css';
-
-//api;
-import ApiService from '../../api';
 
 //const
 import filterPredicate from '../../const/predicates';
 
-const api = new ApiService();
+//selectors
+import { GetTodoList, GetFilter } from 'selectors/todos';
 
 const TodoList = () => {
-  const todos = useSelector((state) => state.todos);
-  const filter = useSelector((state) => state.filter);
+  const todos = useSelector(GetTodoList);
+  const filter: Option = useSelector(GetFilter);
 
   const dispatch = useDispatch();
 

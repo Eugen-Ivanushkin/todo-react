@@ -1,9 +1,19 @@
 import React, { useCallback, useState } from 'react';
 
 //style
+//@ts-ignore
 import style from './style.module.css';
 
-const TodoListItem = (props) => {
+interface Props {
+  id: string;
+  text: string;
+  isDone: boolean;
+  handleIsDoneClick: (id: string) => void;
+  onDeleteClick: (id: string) => void;
+  onUpdateTextClick: (id: string, newText: string) => void;
+}
+
+const TodoListItem = (props: Props) => {
   const {
     id,
     text,
@@ -16,7 +26,7 @@ const TodoListItem = (props) => {
   const [newText, setNewText] = useState(text);
   const [isEdit, setIsEdit] = useState(false);
 
-  let waitingForClick = false;
+  let waitingForClick: any = false;
 
   const handleClick = useCallback((e) => {
     if (e.target.id === 'delBtn') {

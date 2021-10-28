@@ -4,11 +4,11 @@ import React from 'react';
 //@ts-ignore
 import style from './style.module.css';
 
-interface titleProps {
+interface Props {
   title: string;
 }
 
-const Title: React.FC<titleProps> = ({ title }) => {
+const Title = ({ title }: Props) => {
   return <h1 className={style.h1}>{title}</h1>;
 };
 

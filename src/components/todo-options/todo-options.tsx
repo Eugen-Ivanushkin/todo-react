@@ -1,17 +1,18 @@
 import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 //components
 import Filter from '../option';
 
 //style
+//@ts-ignore
 import style from './style.module.css';
 
-//api;
-import ApiService from '../../api';
-import { useDispatch } from 'react-redux';
-const api = new ApiService();
+interface Props {
+  filters: Array<string>;
+}
 
-const TodoOptions = ({ filters }) => {
+const TodoOptions = ({ filters }: Props) => {
   const dispatch = useDispatch();
 
   const handleFilterChange = useCallback((actionName) => {

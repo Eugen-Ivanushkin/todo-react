@@ -1,12 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
-import reducer from './reducers';
+import rootReducer from 'reducers';
 import createSagaMiddleware from 'redux-saga';
-
 import { todosWatcher } from './saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
 export default store;
 

@@ -56,7 +56,7 @@ function* updateTextTask(action) {
 
   try {
     yield call(api.updateTask, task);
-    yield put({ type: 'UPDATE_TODOS_TASK', payload: { id, newText } });
+    yield put({ type: 'UPDATE_TODOS_TASK', payload: task });
   } catch (error) {
     console.log(error);
   }

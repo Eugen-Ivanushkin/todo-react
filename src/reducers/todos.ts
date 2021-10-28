@@ -1,17 +1,37 @@
-const initialState = {
+import { Option } from 'const/predicates';
+
+export interface InitialState {
+  todos: Array<Todo>;
+  filter: Option;
+}
+
+export interface Todo {
+  _id: string;
+  text: string;
+  isDone: boolean;
+}
+
+export const initialState: InitialState = {
   todos: [],
-  filter: 'ACTIVE',
+  filter: Option.ACTIVE,
 };
 
-const reducer = (state = initialState, action) => {
+interface Action {
+  type: string;
+  payload: string | Todo;
+}
+
+const todosReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'TODOS_LOADED':
       return { ...state, todos: action.payload };
 
     case 'ADD_TODOS_TASK': {
-      console.log(action.payload);
       const todos = state.todos.slice();
-      todos.push(action.payload);
+
+      if (typeof action.payload !== 'string') {
+        todos.push(action.payload);
+      }
 
       return { ...state, todos };
     }
@@ -33,12 +53,15 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'UPDATE_TODOS_TASK': {
-      const { id, newText } = action.payload;
       const todos = state.todos.slice();
-      const index = todos.findIndex((item) => item._id === id);
-      const task = todos.splice(index, 1)[0];
-      task.text = newText;
-      todos.splice(index, 0, task);
+
+      if (typeof action.payload !== 'string') {
+        const id: string = action.payload._id;
+        const index = todos.findIndex((item) => item._id === id); // action payload._id - dont exist
+        const task = todos.splice(index, 1)[0];
+        task.text = action.payload.text;
+        todos.splice(index, 0, task);
+      }
 
       return { ...state, todos };
     }
@@ -50,15 +73,15 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'ALL': {
-      return { ...state, filter: action.type };
+      return { ...state, filter: Option.ALL };
     }
 
     case 'ACTIVE': {
-      return { ...state, filter: action.type };
+      return { ...state, filter: Option.ACTIVE };
     }
 
     case 'COMPLETED': {
-      return { ...state, filter: action.type };
+      return { ...state, filter: Option.COMPLETED };
     }
 
     default:
@@ -66,4 +89,4 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+export default todosReducer;

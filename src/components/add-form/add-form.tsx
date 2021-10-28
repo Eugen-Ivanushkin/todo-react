@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 //style
+//@ts-ignore
 import style from './style.module.css';
 
 const AddForm = () => {

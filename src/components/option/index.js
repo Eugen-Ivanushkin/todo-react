@@ -1,1 +1,1 @@
-export { default } from "./option.jsx";
+export { default } from './option.tsx';

@@ -1,1 +1,1 @@
-export { default } from "./todo-list-item.jsx";
+export { default } from './todo-list-item.tsx';

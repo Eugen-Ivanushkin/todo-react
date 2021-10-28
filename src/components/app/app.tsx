@@ -9,6 +9,7 @@ import TodoList from '../todo-list';
 import TodoOptions from '../todo-options';
 
 //style
+//@ts-ignore
 import style from './style.module.css';
 
 const App = () => {
