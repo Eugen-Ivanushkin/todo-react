@@ -49,8 +49,8 @@ function* addTask({ payload }: AddTodosPayload) {
 
 function* deleteTask({ payload }: DeleteTodosPayload) {
   try {
-    const response: Response = yield call(api.deleteTask, payload);
-    yield put({ type: DeleteTodoTypes.success, payload: response.data });
+    yield call(api.deleteTask, payload._id);
+    yield put({ type: DeleteTodoTypes.success, payload });
   } catch (error) {
     console.log(error);
     yield put({

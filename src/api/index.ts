@@ -14,9 +14,8 @@ export default class ApiService {
     return result;
   }
 
-  async deleteTask({ _id }: Todo): Promise<any> {
-    const result = callApi(`${_apiBase}/todos/${_id}`, { method: 'DELETE' });
-    return result;
+  async deleteTask(id: string | undefined): Promise<any> {
+    callApi(`${_apiBase}/todos/${id}`, { method: 'DELETE' });
   }
 
   async deleteAllComplited(): Promise<any> {

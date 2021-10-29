@@ -17,7 +17,6 @@ export const initialState: InitialState = {
 const todosReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case TodosLoadedTypes.success:
-      console.log(action.payload);
       return { ...state, list: action.payload };
 
     case AddTodoTypes.success: {
