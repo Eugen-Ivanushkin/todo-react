@@ -1,3 +1,4 @@
+import { ClearIsDoneTodoTypes } from 'const/action_types';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -20,7 +21,7 @@ const TodoOptions = ({ filters }: Props) => {
   }, []);
 
   const handleClearClicked = useCallback(() => {
-    dispatch({ type: 'ASYNC_CLEAR_ISDONE_TODOS_TASKS' });
+    dispatch({ type: ClearIsDoneTodoTypes.request });
     handleFilterChange('ALL');
   }, []);
 

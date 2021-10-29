@@ -1,9 +1,9 @@
 import { Option } from 'const/predicates';
-import { initialState as state, InitialState } from '../reducers/todos';
+import { InitialState } from 'types/todos';
 
 interface State {
-  list: InitialState;
+  todos: InitialState;
 }
 
-export const GetTodoList = (state: State) => state.list.todos;
-export const GetFilter = (state: State): Option => state.list.filter;
+export const GetTodoList = (state: State) => state.todos.list;
+export const GetFilter = (state: State): Option => state.todos.filter;

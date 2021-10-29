@@ -1,8 +1,8 @@
-import { Todo } from 'reducers/todos';
-
-const getObjectById = (arr: Todo[], id: string): object => {
-  const obj = arr.find((item) => item._id === id);
-  return { ...obj };
+const getObjectById = <Type extends { _id: string }>(
+  arr: Type[],
+  id: string
+): Type | undefined => {
+  return arr.find((item) => item._id === id);
 };
 
 export default getObjectById;

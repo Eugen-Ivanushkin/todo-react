@@ -8,6 +8,9 @@ import AddForm from '../add-form';
 import TodoList from '../todo-list';
 import TodoOptions from '../todo-options';
 
+// Options
+import { Option } from 'const/predicates';
+
 //style
 //@ts-ignore
 import style from './style.module.css';
@@ -19,7 +22,7 @@ const App = () => {
       <div className={style.main}>
         <AddForm />
         <TodoList />
-        <TodoOptions filters={['All', 'Active', 'Completed']} />
+        <TodoOptions filters={[Option.ALL, Option.ACTIVE, Option.COMPLETED]} />
       </div>
     </div>
   );

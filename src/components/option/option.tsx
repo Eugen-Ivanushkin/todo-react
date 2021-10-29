@@ -16,7 +16,7 @@ const Filter = ({ name, onFilterChange }: Props) => {
 
   return (
     <button onClick={handleClick} className={style.groupBtn}>
-      {name}
+      {name[0] + name.toLowerCase().slice(1)}
     </button>
   );
 };

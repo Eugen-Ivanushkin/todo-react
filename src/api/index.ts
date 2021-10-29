@@ -1,4 +1,5 @@
 import callApi from '../utils/callApi';
+import { Todo } from 'types/todos';
 
 const _apiBase = process.env.API_URL;
 
@@ -13,8 +14,8 @@ export default class ApiService {
     return result;
   }
 
-  async deleteTask(id: string): Promise<any> {
-    const result = callApi(`${_apiBase}/todos/${id}`, { method: 'DELETE' });
+  async deleteTask({ _id }: Todo): Promise<any> {
+    const result = callApi(`${_apiBase}/todos/${_id}`, { method: 'DELETE' });
     return result;
   }
 
@@ -23,8 +24,11 @@ export default class ApiService {
     return result;
   }
 
-  async updateTask(body: object, id: string): Promise<any> {
-    const result = callApi(`${_apiBase}/todos/${id}`, { method: 'PUT', body });
+  async updateTask(body: Todo): Promise<any> {
+    const result = callApi(`${_apiBase}/todos/${body._id}`, {
+      method: 'PUT',
+      body,
+    });
     return result;
   }
 }

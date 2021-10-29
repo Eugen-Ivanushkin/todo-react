@@ -1,65 +1,60 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { Todo } from 'types/todos';
 
 //style
 //@ts-ignore
 import style from './style.module.css';
 
 interface Props {
-  id: string;
-  text: string;
-  isDone: boolean;
-  handleIsDoneClick: (id: string) => void;
-  onDeleteClick: (id: string) => void;
-  onUpdateTextClick: (id: string, newText: string) => void;
+  todo: Todo;
+  handleIsDoneClick: (todo: Todo) => void;
+  onDeleteClick: (todo: Todo) => void;
+  onUpdateTextClick: (todo: Todo, newText: string) => void;
 }
 
 const TodoListItem = (props: Props) => {
-  const {
-    id,
-    text,
-    isDone,
-    handleIsDoneClick,
-    onDeleteClick,
-    onUpdateTextClick,
-  } = props;
+  const { todo, handleIsDoneClick, onDeleteClick, onUpdateTextClick } = props;
 
-  const [newText, setNewText] = useState(text);
+  const [newText, setNewText] = useState(todo.text);
   const [isEdit, setIsEdit] = useState(false);
 
-  let waitingForClick: any = false;
+  const waitingForClick = useRef<NodeJS.Timeout>();
 
-  const handleClick = useCallback((e) => {
-    if (e.target.id === 'delBtn') {
-      return;
-    }
+  const handleClick = useCallback(
+    (e) => {
+      if (e.target.id === 'delBtn') {
+        return;
+      }
 
-    switch (e.detail) {
-      case 1: // first click
-        waitingForClick = setTimeout(() => {
-          handleIsDoneClick(id);
-        }, 250);
-        break;
+      switch (e.detail) {
+        case 1: // first click
+          waitingForClick.current = setTimeout(() => {
+            handleIsDoneClick(todo);
+          }, 250);
+          break;
 
-      default:
-        // more click
-        if (waitingForClick) {
-          // remove click
-          clearTimeout(waitingForClick);
-          setIsEdit(true);
-          waitingForClick = false;
-        }
-        break;
-    }
-  }, []);
+        default:
+          // more click
+          if (waitingForClick.current) {
+            // remove click
+            clearTimeout(waitingForClick.current);
+            setIsEdit(true);
+            waitingForClick.current = undefined;
+          }
+          break;
+      }
+    },
+    [todo]
+  );
 
   const handleDeleteClick = useCallback(() => {
-    onDeleteClick(id);
-  }, [id]);
+    onDeleteClick(todo);
+  }, [todo]);
 
   const handleUpdateTextClick = useCallback(() => {
-    onUpdateTextClick(id, newText);
+    onUpdateTextClick(todo, newText);
     setIsEdit(false);
-  }, [id, newText]);
+  }, [todo, newText]);
 
   const handleChange = useCallback((e) => {
     const { value } = e.target;
@@ -67,11 +62,15 @@ const TodoListItem = (props: Props) => {
   }, []);
 
   return (
-    <li className={style.listItem} key={id} onClick={handleClick}>
+    <li className={style.listItem} key={todo._id} onClick={handleClick}>
       {!isEdit ? (
         <>
-          <p className={`${style.listItemText} ${isDone ? style.isDone : ''}`}>
-            {text}
+          <p
+            className={`${style.listItemText} ${
+              todo.isDone ? style.isDone : ''
+            }`}
+          >
+            {todo.text}
           </p>
           <button
             id="delBtn"

@@ -1,3 +1,4 @@
+import { AddTodoTypes } from 'const/action_types';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -20,7 +21,7 @@ const AddForm = () => {
   const handleKeyPress = useCallback(
     (e) => {
       if (e.key === 'Enter') {
-        dispatch({ type: 'ASYNC_ADD_TODOS_TASK', payload: text });
+        dispatch({ type: AddTodoTypes.request, payload: { text } });
         e.target.value = '';
       }
     },

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import getObjectById from '../../utils/getObjectById';
 import { Option } from '../../const/predicates';
 
 //components
@@ -15,6 +14,11 @@ import filterPredicate from '../../const/predicates';
 
 //selectors
 import { GetTodoList, GetFilter } from 'selectors/todos';
+import {
+  DeleteTodoTypes,
+  TodosLoadedTypes,
+  UpdateTodoTypes,
+} from 'const/action_types';
 
 const TodoList = () => {
   const todos = useSelector(GetTodoList);
@@ -23,35 +27,32 @@ const TodoList = () => {
   const dispatch = useDispatch();
 
   const handleIsDoneClick = useCallback(
-    (id) => {
-      const task = getObjectById(todos, id);
-      task.isDone = !task.isDone;
-
-      dispatch({ type: 'ASYNC_ISDONE_TODOS_TASK', payload: { task, id } });
-    },
-    [todos]
-  );
-
-  const handleUpdateTextClick = useCallback(
-    (id, newText) => {
-      const task = getObjectById(todos, id);
-      task.text = newText;
-
+    (todo) => {
       dispatch({
-        type: 'ASYNC_UPDATE_TODOS_TASK',
-        payload: { task, id, newText },
+        type: UpdateTodoTypes.request,
+        payload: { ...todo, isDone: !todo.isDone },
       });
     },
     [todos]
   );
 
-  const handleDeleteClick = useCallback((id) => {
-    dispatch({ type: 'ASYNC_DELETE_TODOS_TASK', payload: id });
+  const handleUpdateTextClick = useCallback(
+    (todo, newText) => {
+      dispatch({
+        type: UpdateTodoTypes.request,
+        payload: { ...todo, text: newText },
+      });
+    },
+    [todos]
+  );
+
+  const handleDeleteClick = useCallback((todo) => {
+    dispatch({ type: DeleteTodoTypes.request, payload: { ...todo } });
   }, []);
 
   useEffect(() => {
-    dispatch({ type: 'ASYNC_TODOS_LOADED' });
-    dispatch({ type: 'ALL' });
+    dispatch({ type: TodosLoadedTypes.request });
+    dispatch({ type: Option.ALL });
   }, []);
   const filteredTodos = useMemo(
     () => todos?.filter(filterPredicate[filter]),
@@ -62,9 +63,7 @@ const TodoList = () => {
       {filteredTodos?.map((el) => (
         <TodoListItem
           key={el._id}
-          id={el._id}
-          text={el.text}
-          isDone={el.isDone}
+          todo={el}
           handleIsDoneClick={handleIsDoneClick}
           onDeleteClick={handleDeleteClick}
           onUpdateTextClick={handleUpdateTextClick}

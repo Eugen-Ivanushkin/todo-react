@@ -1,86 +1,62 @@
+import {
+  AddTodoTypes,
+  ClearIsDoneTodoTypes,
+  DeleteTodoTypes,
+  TodosLoadedTypes,
+  UpdateTodoTypes,
+} from 'const/action_types';
 import { Option } from 'const/predicates';
 
-export interface InitialState {
-  todos: Array<Todo>;
-  filter: Option;
-}
-
-export interface Todo {
-  _id: string;
-  text: string;
-  isDone: boolean;
-}
+import { InitialState, Action } from 'types/todos';
 
 export const initialState: InitialState = {
-  todos: [],
+  list: [],
   filter: Option.ACTIVE,
 };
 
-interface Action {
-  type: string;
-  payload: string | Todo;
-}
-
 const todosReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case 'TODOS_LOADED':
-      return { ...state, todos: action.payload };
+    case TodosLoadedTypes.success:
+      console.log(action.payload);
+      return { ...state, list: action.payload };
 
-    case 'ADD_TODOS_TASK': {
-      const todos = state.todos.slice();
+    case AddTodoTypes.success: {
+      const list = state.list.slice();
 
-      if (typeof action.payload !== 'string') {
-        todos.push(action.payload);
-      }
+      list.push(action.payload);
 
-      return { ...state, todos };
+      return { ...state, list };
     }
 
-    case 'DELETE_TODOS_TASK': {
-      const todos = state.todos.slice();
-      const index = todos.findIndex((item) => item._id === action.payload);
-      todos.splice(index, 1);
+    case DeleteTodoTypes.success: {
+      const list = state.list.filter((item) => item._id !== action.payload._id);
 
-      return { ...state, todos };
+      return { ...state, list };
     }
 
-    case 'ISDONE_TODOS_TASK': {
-      const todos = state.todos.map((todo) =>
-        todo._id === action.payload ? { ...todo, isDone: !todo.isDone } : todo
+    case UpdateTodoTypes.success: {
+      const list = state.list.map((todo) =>
+        todo._id === action.payload._id ? action.payload : todo
       );
 
-      return { ...state, todos };
+      return { ...state, list };
     }
 
-    case 'UPDATE_TODOS_TASK': {
-      const todos = state.todos.slice();
+    case ClearIsDoneTodoTypes.success: {
+      const list = state.list.filter((item) => item.isDone === false);
 
-      if (typeof action.payload !== 'string') {
-        const id: string = action.payload._id;
-        const index = todos.findIndex((item) => item._id === id); // action payload._id - dont exist
-        const task = todos.splice(index, 1)[0];
-        task.text = action.payload.text;
-        todos.splice(index, 0, task);
-      }
-
-      return { ...state, todos };
+      return { ...state, list };
     }
 
-    case 'CLEAR_ISDONE_TODOS_TASKS': {
-      const todos = state.todos.slice().filter((item) => item.isDone === false);
-
-      return { ...state, todos };
-    }
-
-    case 'ALL': {
+    case Option.ALL: {
       return { ...state, filter: Option.ALL };
     }
 
-    case 'ACTIVE': {
+    case Option.ACTIVE: {
       return { ...state, filter: Option.ACTIVE };
     }
 
-    case 'COMPLETED': {
+    case Option.COMPLETED: {
       return { ...state, filter: Option.COMPLETED };
     }
 
