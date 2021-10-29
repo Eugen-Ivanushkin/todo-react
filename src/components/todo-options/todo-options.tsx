@@ -1,6 +1,8 @@
-import { ClearIsDoneTodoTypes } from 'const/action_types';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+
+import { ClearIsDoneTodoTypes } from 'const/action_types';
+import { Option } from 'const/predicates';
 
 //components
 import Filter from '../option';
@@ -22,7 +24,7 @@ const TodoOptions = ({ filters }: Props) => {
 
   const handleClearClicked = useCallback(() => {
     dispatch({ type: ClearIsDoneTodoTypes.request });
-    handleFilterChange('ALL');
+    handleFilterChange(Option.ALL);
   }, []);
 
   return (
