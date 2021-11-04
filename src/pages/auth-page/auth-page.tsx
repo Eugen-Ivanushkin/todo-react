@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Form, Field } from 'react-final-form';
 
 //components
 
@@ -7,7 +8,11 @@ import React from 'react';
 import style from './style.module.css';
 
 const AuthPage = () => {
-  return <div>Authorization</div>;
+  return (
+    <div>
+      <h1>Authorization</h1>
+    </div>
+  );
 };
 
 export default AuthPage;
