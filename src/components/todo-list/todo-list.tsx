@@ -7,7 +7,7 @@ import TodoListItem from '../todo-list-item';
 
 //styles
 //@ts-ignore
-import style from './style.module.css';
+import style from './style.module.scss';
 
 //const
 import filterPredicate from '../../const/predicates';

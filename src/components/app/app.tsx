@@ -8,7 +8,7 @@ import AppRouter from 'components/app-router';
 
 //stylea
 //@ts-ignore
-import style from './style.module.css';
+import style from './style.module.scss';
 
 const App = () => {
   return (

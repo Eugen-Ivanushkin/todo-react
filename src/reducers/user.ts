@@ -1,7 +1,7 @@
 import { InitialState, Action } from 'types/user';
 
 const initialState: InitialState = {
-  isAuth: true,
+  isAuth: false,
 };
 
 const userReducer = (state = initialState, action: Action) => {

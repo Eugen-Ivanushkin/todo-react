@@ -9,6 +9,7 @@ import {
   USER_ROUTE,
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
+  REDIRECT_ROUTE,
 } from 'const/routes';
 
 export const authRoutes = [
@@ -20,6 +21,10 @@ export const authRoutes = [
     path: USER_ROUTE,
     Component: UserProfilePage,
   },
+  {
+    path: REDIRECT_ROUTE,
+    Component: TodosPage,
+  },
 ];
 
 export const publicRoutes = [
@@ -30,5 +35,9 @@ export const publicRoutes = [
   {
     path: REGISTRATION_ROUTE,
     Component: RegisterPage,
+  },
+  {
+    path: REDIRECT_ROUTE,
+    Component: AuthPage,
   },
 ];

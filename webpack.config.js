@@ -15,6 +15,9 @@ module.exports = {
       react: path.join(__dirname, 'node_modules', 'react'),
     },
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   module: {
     rules: [
       {
@@ -25,14 +28,14 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
+        test: /\.s[ac]ss$/i,
         use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
         ],
       },
     ],

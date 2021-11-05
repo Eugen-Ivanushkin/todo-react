@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 //style
 //@ts-ignore
-import style from './style.module.css';
+import style from './style.module.scss';
 
 const AddForm = () => {
   const [text, setText] = useState('');

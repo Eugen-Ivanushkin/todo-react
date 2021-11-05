@@ -9,7 +9,7 @@ import Filter from '../option';
 
 //style
 //@ts-ignore
-import style from './style.module.css';
+import style from './style.module.scss';
 
 interface Props {
   filters: Array<string>;

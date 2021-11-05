@@ -13,7 +13,7 @@ import { Option } from '../../const/predicates';
 
 //stylea
 //@ts-ignore
-import style from './style.module.css';
+import style from './style.module.scss';
 
 const TodosPage = () => {
   return (
