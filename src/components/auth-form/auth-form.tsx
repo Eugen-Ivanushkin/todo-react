@@ -28,7 +28,7 @@ const AuthForm = ({ onhandleSabmit }: Props) => {
         initialValues={formData}
         render={({ handleSubmit, form, submitting, pristine }) => (
           <form onSubmit={handleSubmit}>
-            <Field name="Email" validate={required}>
+            <Field name="email" validate={required}>
               {({ input, meta }) => (
                 <div>
                   <label>Email</label>

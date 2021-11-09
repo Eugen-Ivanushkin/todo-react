@@ -5,6 +5,7 @@ import 'regenerator-runtime/runtime';
 
 //components
 import AppRouter from 'components/app-router';
+import NavBar from 'components/nav-bar/nav-bar';
 
 //stylea
 //@ts-ignore
@@ -12,9 +13,12 @@ import style from './style.module.scss';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <NavBar />
+        <AppRouter />
+      </BrowserRouter>
+    </>
   );
 };
 

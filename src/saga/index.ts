@@ -6,18 +6,22 @@ import {
   Response,
 } from 'types/todos';
 
+import { SignInPayload } from 'types/user';
+
 import {
   TodosLoadedTypes,
   AddTodoTypes,
   UpdateTodoTypes,
   DeleteTodoTypes,
   ClearIsDoneTodoTypes,
+  UserSignIn,
 } from '../const/action_types';
 
 import 'regenerator-runtime/runtime';
 import ApiService from '../api';
 const api = new ApiService();
 
+//todos
 function* getTask() {
   try {
     const response: Response = yield call(api.getAll);
@@ -86,10 +90,28 @@ function* updateTask({ payload }: UpdateTodosPayload) {
   }
 }
 
+//user
+function* signIn({ payload }: SignInPayload) {
+  try {
+    const response: Response = yield call(api.signIn, payload);
+    yield put({ type: UserSignIn.success, payload: response });
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: UserSignIn.failed,
+      payload: error,
+    });
+  }
+}
+
 export function* todosWatcher() {
+  //todos
   yield takeEvery(TodosLoadedTypes.request, getTask);
   yield takeEvery(AddTodoTypes.request, addTask);
   yield takeEvery(DeleteTodoTypes.request, deleteTask);
   yield takeEvery(ClearIsDoneTodoTypes.request, deleteAllComplited);
   yield takeEvery(UpdateTodoTypes.request, updateTask);
+
+  //user
+  yield takeEvery(UserSignIn.request, signIn);
 }

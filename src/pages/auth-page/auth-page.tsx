@@ -1,16 +1,19 @@
 import React from 'react';
-// import { Form, Field } from 'react-final-form';
+import { useDispatch } from 'react-redux';
+import { User } from 'types/user';
 
 //components
 import AuthForm from 'components/auth-form';
 
-//stylea
-//@ts-ignore
-import style from './style.module.css';
+// import style from './style.module.scss';
+
+import { UserSignIn } from 'const/action_types';
 
 const AuthPage = () => {
-  const onSubmit = (values: any) => {
-    console.log(values);
+  const dispatch = useDispatch();
+
+  const onSubmit = (userData: User) => {
+    dispatch({ type: UserSignIn.request, payload: userData });
   };
 
   return (
