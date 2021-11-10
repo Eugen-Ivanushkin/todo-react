@@ -4,7 +4,7 @@ export interface InitialState {
 
 export interface Action {
   type: string;
-  payload?: {};
+  payload?: unknown;
 }
 
 export interface User {

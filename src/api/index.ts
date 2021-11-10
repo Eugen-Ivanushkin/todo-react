@@ -46,4 +46,14 @@ export default class ApiService {
     });
     return result;
   }
+
+  //update token
+  async updateTokens(isUpdate: boolean) {
+    const result = callApi(`${_apiBase}/users/update`, {
+      method: 'POST',
+      body: {},
+      isUpdate,
+    });
+    return result;
+  }
 }

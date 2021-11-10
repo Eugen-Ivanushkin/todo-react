@@ -27,4 +27,8 @@ export type UpdateTodosPayload = Action;
 export interface Response {
   message: string;
   data: Todo[] | Todo;
+  tokens?: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }

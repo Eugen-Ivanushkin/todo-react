@@ -21,6 +21,8 @@ import 'regenerator-runtime/runtime';
 import ApiService from '../api';
 const api = new ApiService();
 
+import saveToken from '../utils/saveTouken';
+
 //todos
 function* getTask() {
   try {
@@ -31,7 +33,7 @@ function* getTask() {
 
     yield put({
       type: TodosLoadedTypes.failed,
-      payload: error,
+      payload: { error },
     });
   }
 }
@@ -41,12 +43,13 @@ function* addTask({ payload }: AddTodosPayload) {
     const response: Response = yield call(api.addTask, {
       taskName: payload.text,
     });
+
     yield put({ type: AddTodoTypes.success, payload: response.data });
   } catch (error) {
-    console.log(error);
+    console.log('Err generator', error);
     yield put({
       type: AddTodoTypes.failed,
-      payload: error,
+      payload: { error, oldPayload: payload },
     });
   }
 }
@@ -59,7 +62,7 @@ function* deleteTask({ payload }: DeleteTodosPayload) {
     console.log(error);
     yield put({
       type: DeleteTodoTypes.failed,
-      payload: error,
+      payload: { error },
     });
   }
 }
@@ -72,7 +75,7 @@ function* deleteAllComplited() {
     console.log(error);
     yield put({
       type: ClearIsDoneTodoTypes.failed,
-      payload: error,
+      payload: { error },
     });
   }
 }
@@ -85,7 +88,7 @@ function* updateTask({ payload }: UpdateTodosPayload) {
     console.log(error);
     yield put({
       type: UpdateTodoTypes.failed,
-      payload: error,
+      payload: { error },
     });
   }
 }
@@ -94,12 +97,13 @@ function* updateTask({ payload }: UpdateTodosPayload) {
 function* signIn({ payload }: SignInPayload) {
   try {
     const response: Response = yield call(api.signIn, payload);
+    yield saveToken(response.tokens);
     yield put({ type: UserSignIn.success, payload: response });
   } catch (error) {
     console.log(error);
     yield put({
       type: UserSignIn.failed,
-      payload: error,
+      payload: { error },
     });
   }
 }
