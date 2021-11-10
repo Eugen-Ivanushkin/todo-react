@@ -22,7 +22,7 @@ const TodoListItem = (props: Props) => {
 
   const handleClick = useCallback(
     (e) => {
-      if (e.target.id === 'delBtn') {
+      if (e.target.id === 'delBtn' || e.target.id === 'change-text-input') {
         return;
       }
 
@@ -82,6 +82,7 @@ const TodoListItem = (props: Props) => {
         </>
       ) : (
         <input
+          id="change-text-input"
           onChange={(e) => {
             handleChange(e);
           }}

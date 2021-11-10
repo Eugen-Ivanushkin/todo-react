@@ -10,7 +10,7 @@ const errorMiddleWare =
   () => (next: any) => (action: { payload: any; type: string }) => {
     const actionType = action.type.split('_');
     actionType.pop();
-    const successType = actionType.join('_') + '_REQUEST';
+    const requestType = actionType.join('_') + '_REQUEST';
 
     if (
       action.payload?.error &&
@@ -21,7 +21,7 @@ const errorMiddleWare =
         payload: true,
       });
       store.dispatch({
-        type: successType,
+        type: requestType,
         payload: action.payload?.oldPayload,
       });
     }

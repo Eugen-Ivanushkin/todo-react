@@ -21,6 +21,10 @@
   color: inherit;
   background-color: transparent;
   cursor: pointer;
+
+  &:hover {
+    color: red;
+  }
 }
 
 .isDone {
