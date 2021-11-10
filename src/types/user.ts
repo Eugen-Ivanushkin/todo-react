@@ -17,4 +17,9 @@ export interface ActionSaga {
   payload: User;
 }
 
+export interface ActionToken {
+  type: string;
+  payload: boolean;
+}
+
 export type SignInPayload = ActionSaga;

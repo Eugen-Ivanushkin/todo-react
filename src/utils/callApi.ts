@@ -4,10 +4,10 @@ interface Action {
   isUpdate?: boolean;
 }
 
-const callApi = async (
+const callApi = async <T extends {}>(
   url: string,
   { method, body, isUpdate }: Action
-): Promise<any> => {
+): Promise<T> => {
   //@ts-ignore
   const storage = await JSON.parse(sessionStorage.getItem('tokenData'));
 
@@ -26,6 +26,17 @@ const callApi = async (
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
   const result = await res.json();
+
+  // if (result.status === 401) {
+  //   const response = await callApi<any>('/refresh-token', {});
+  //   const result = await response.json();
+
+  //   if (!result.ok) {
+  //     // throwError
+  //   }
+
+  //   return await callApi<T>(url, { method, body, isUpdate });
+  // }
 
   if (!res.ok) {
     throw result;

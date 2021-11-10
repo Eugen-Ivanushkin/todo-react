@@ -6,7 +6,7 @@ import {
   Response,
 } from 'types/todos';
 
-import { SignInPayload } from 'types/user';
+import { SignInPayload, ActionToken } from 'types/user';
 
 import {
   TodosLoadedTypes,
@@ -15,6 +15,7 @@ import {
   DeleteTodoTypes,
   ClearIsDoneTodoTypes,
   UserSignIn,
+  UpdateToken,
 } from '../const/action_types';
 
 import 'regenerator-runtime/runtime';
@@ -47,6 +48,7 @@ function* addTask({ payload }: AddTodosPayload) {
     yield put({ type: AddTodoTypes.success, payload: response.data });
   } catch (error) {
     console.log('Err generator', error);
+
     yield put({
       type: AddTodoTypes.failed,
       payload: { error, oldPayload: payload },
@@ -62,7 +64,7 @@ function* deleteTask({ payload }: DeleteTodosPayload) {
     console.log(error);
     yield put({
       type: DeleteTodoTypes.failed,
-      payload: { error },
+      payload: { error, oldPayload: payload },
     });
   }
 }
@@ -88,7 +90,7 @@ function* updateTask({ payload }: UpdateTodosPayload) {
     console.log(error);
     yield put({
       type: UpdateTodoTypes.failed,
-      payload: { error },
+      payload: { error, oldPayload: payload },
     });
   }
 }
@@ -108,6 +110,19 @@ function* signIn({ payload }: SignInPayload) {
   }
 }
 
+//update token
+function* updateTokens({ payload }: ActionToken) {
+  try {
+    const response: Response = yield call(api.updateTokens, payload);
+    yield saveToken(response.tokens);
+  } catch (error) {
+    yield put({
+      type: UpdateToken.failed,
+      payload: { error },
+    });
+  }
+}
+
 export function* todosWatcher() {
   //todos
   yield takeEvery(TodosLoadedTypes.request, getTask);
@@ -118,4 +133,7 @@ export function* todosWatcher() {
 
   //user
   yield takeEvery(UserSignIn.request, signIn);
+
+  //update token
+  yield takeEvery(UpdateToken.request, updateTokens);
 }

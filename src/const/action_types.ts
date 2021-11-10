@@ -13,3 +13,6 @@ export const ClearIsDoneTodoTypes = ActionTypeCreator('CLEAR_ISDONE_TODO');
 
 //user
 export const UserSignIn = ActionTypeCreator('SIGN_IN');
+
+//update token
+export const UpdateToken = ActionTypeCreator('UPDATE_TOKEN');
