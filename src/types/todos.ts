@@ -9,6 +9,7 @@ export interface Todo {
   text: string;
   _id?: string;
   isDone?: boolean;
+  sort?: number | undefined;
 }
 
 export interface Action {

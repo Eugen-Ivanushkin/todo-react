@@ -6,6 +6,7 @@ import { Todo } from 'types/todos';
 import style from './style.module.scss';
 
 interface Props {
+  id: string;
   todo: Todo;
   handleIsDoneClick: (todo: Todo) => void;
   onDeleteClick: (todo: Todo) => void;
@@ -13,7 +14,8 @@ interface Props {
 }
 
 const TodoListItem = (props: Props) => {
-  const { todo, handleIsDoneClick, onDeleteClick, onUpdateTextClick } = props;
+  const { id, todo, handleIsDoneClick, onDeleteClick, onUpdateTextClick } =
+    props;
 
   const [newText, setNewText] = useState(todo.text);
   const [isEdit, setIsEdit] = useState(false);
@@ -62,7 +64,13 @@ const TodoListItem = (props: Props) => {
   }, []);
 
   return (
-    <li className={style.listItem} key={todo._id} onClick={handleClick}>
+    <li
+      draggable
+      className={style.listItem}
+      key={todo._id}
+      onClick={handleClick}
+      id={id}
+    >
       {!isEdit ? (
         <>
           <p

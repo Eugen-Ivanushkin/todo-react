@@ -16,3 +16,6 @@ export const UserSignIn = ActionTypeCreator('SIGN_IN');
 
 //update token
 export const UpdateToken = ActionTypeCreator('UPDATE_TOKEN');
+
+//sort
+export const SortTodos = ActionTypeCreator('SORT_TODOS');

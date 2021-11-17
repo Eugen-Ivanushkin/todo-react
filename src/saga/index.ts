@@ -6,7 +6,7 @@ import {
   Response,
 } from 'types/todos';
 
-import { SignInPayload, ActionToken } from 'types/user';
+import { SignInPayload, ActionToken, ActionSort } from 'types/user';
 
 import {
   TodosLoadedTypes,
@@ -16,6 +16,7 @@ import {
   ClearIsDoneTodoTypes,
   UserSignIn,
   UpdateToken,
+  SortTodos,
 } from '../const/action_types';
 
 import 'regenerator-runtime/runtime';
@@ -123,6 +124,10 @@ function* updateTokens({ payload }: ActionToken) {
   }
 }
 
+function* dragSort({ payload }: ActionSort) {
+  yield put({ type: SortTodos.success, payload });
+}
+
 export function* todosWatcher() {
   //todos
   yield takeEvery(TodosLoadedTypes.request, getTask);
@@ -136,4 +141,7 @@ export function* todosWatcher() {
 
   //update token
   yield takeEvery(UpdateToken.request, updateTokens);
+
+  //sort
+  yield takeEvery(SortTodos.request, dragSort);
 }

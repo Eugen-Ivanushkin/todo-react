@@ -22,4 +22,12 @@ export interface ActionToken {
   payload: boolean;
 }
 
+export interface ActionSort {
+  type: string;
+  payload: {
+    prevIdx: number;
+    idx: number;
+  };
+}
+
 export type SignInPayload = ActionSaga;
