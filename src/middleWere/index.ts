@@ -1,9 +1,5 @@
 import store from 'store';
 import { UpdateToken } from 'const/action_types';
-import { eventChannel } from '@redux-saga/core';
-import { Todo } from 'types/todos';
-
-import { io } from 'socket.io-client';
 
 const errorMiddleWare =
   () => (next: any) => (action: { payload: any; type: string }) => {
@@ -29,17 +25,3 @@ const errorMiddleWare =
   };
 
 export default errorMiddleWare;
-
-// const initWebSocket = () => {
-//   return eventChannel((emiter) => {
-//     const ws = io('http://localhost:5000');
-
-//     ws.on('connect', () => {
-//       console.log('Connected to server');
-//     });
-
-//     ws.on('TODO_ADDED', (task: Todo) => {
-//       console.log('Task:', task);
-//     });
-//   });
-// };

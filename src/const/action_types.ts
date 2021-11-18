@@ -2,6 +2,7 @@ const ActionTypeCreator = <T extends string>(text: T) => ({
   request: `${text}_REQUEST`,
   success: `${text}_SUCCESS`,
   failed: `${text}_FAILED`,
+  socket: `${text}_SOCKET`,
 });
 
 //todos

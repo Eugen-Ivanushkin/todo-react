@@ -5,11 +5,16 @@ import { fork, take, call, put, ActionPattern } from 'redux-saga/effects';
 import {
   AddTodoTypes,
   ClearIsDoneTodoTypes,
+  DeleteTodoTypes,
+  SortTodos,
   UpdateTodoTypes,
 } from 'const/action_types';
 
 import { Todo } from 'types/todos';
 import { Action } from 'redux';
+
+//@ts-ignore
+const storage = JSON.parse(sessionStorage.getItem('tokenData'));
 
 type AddTodoSuccess = {
   type: typeof AddTodoTypes.success;
@@ -22,7 +27,11 @@ type ClearIsDoneTodoSuccess = {
 };
 
 function connect() {
-  const socket = io('http://localhost:5000');
+  const socket = io('http://localhost:5000', {
+    auth: {
+      token: storage.accessToken,
+    },
+  });
   return new Promise((resolve) => {
     socket.on('connect', () => {
       resolve(socket);
@@ -33,8 +42,19 @@ function connect() {
 function subscribe(socket: Socket) {
   return eventChannel((emit) => {
     socket.on('TODO_ADDED', (task: Todo) => {
-      console.log('Task:', task);
-      return emit({ type: 'ADD_TODO_SOCKET', payload: task });
+      return emit({ type: AddTodoTypes.socket, payload: task });
+    });
+    socket.on('TODO_UPDATED', (task: Todo) => {
+      return emit({ type: UpdateTodoTypes.socket, payload: task });
+    });
+    socket.on('TODO_DELETED', (task: Todo) => {
+      return emit({ type: DeleteTodoTypes.socket, payload: task });
+    });
+    socket.on('TODO_CLEARED', (task: Todo) => {
+      return emit({ type: ClearIsDoneTodoTypes.socket, payload: task });
+    });
+    socket.on('TODOS_SORTED', (index) => {
+      return emit({ type: SortTodos.socket, payload: index });
     });
     return () => {};
   });
@@ -55,15 +75,30 @@ function* write(socket: Socket) {
     const action: SuccessTodoTypes = yield take([
       AddTodoTypes.success,
       UpdateTodoTypes.success,
+      ClearIsDoneTodoTypes.success,
+      DeleteTodoTypes.success,
+      SortTodos.success,
     ]);
 
     switch (action.type) {
       case AddTodoTypes.success: {
-        socket.emit('ADD_TODO', action.payload);
+        socket.emit('ADD_TODO', action.payload, storage.accessToken);
+        break;
+      }
+      case UpdateTodoTypes.success: {
+        socket.emit('UPDATE_TODO', action.payload, storage.accessToken);
+        break;
+      }
+      case DeleteTodoTypes.success: {
+        socket.emit('DELETE_TODO', action.payload, storage.accessToken);
         break;
       }
       case ClearIsDoneTodoTypes.success: {
-        socket.emit('CLEAR_TODOS', action.payload && true);
+        socket.emit('CLEAR_TODOS', action.payload, storage.accessToken);
+        break;
+      }
+      case SortTodos.success: {
+        socket.emit('SORT_TODOS', action.payload, storage.accessToken);
         break;
       }
     }

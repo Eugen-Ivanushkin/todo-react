@@ -20,12 +20,13 @@ export const initialState: InitialState = {
 const todosReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case TodosLoadedTypes.success:
+      //@ts-ignore
       const list: Todo[] = action.payload.sort(
         (a: Todo, b: Todo) => Number(a.sort) - Number(b.sort)
       );
       return { ...state, list };
 
-    case 'ADD_TODO_SOCKET':
+    case AddTodoTypes.socket:
     case AddTodoTypes.success: {
       const todo = action.payload;
       return {
@@ -33,12 +34,13 @@ const todosReducer = (state = initialState, action: Action) => {
         list: [...state.list, todo],
       };
     }
+    case DeleteTodoTypes.socket:
     case DeleteTodoTypes.success: {
       const list = state.list.filter((item) => item._id !== action.payload._id);
 
       return { ...state, list };
     }
-
+    case UpdateTodoTypes.socket:
     case UpdateTodoTypes.success: {
       const list = state.list.map((todo) =>
         todo._id === action.payload._id ? action.payload : todo
@@ -46,7 +48,7 @@ const todosReducer = (state = initialState, action: Action) => {
 
       return { ...state, list };
     }
-
+    case ClearIsDoneTodoTypes.socket:
     case ClearIsDoneTodoTypes.success: {
       const list = state.list.filter((item) => item.isDone === false);
 
@@ -65,6 +67,7 @@ const todosReducer = (state = initialState, action: Action) => {
       return { ...state, filter: Option.COMPLETED };
     }
 
+    case SortTodos.socket:
     case SortTodos.success: {
       const { prevIdx, idx }: any = action.payload;
 
